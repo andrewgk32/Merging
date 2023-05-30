@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>AI Glasses Try-On</title>
+		<link rel="stylesheet" type="text/css" href="Static/css/GUI.css">
+		<style>
+			.glasses-list {
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				margin-top: 20px;
+			}
+			.glasses-button {
+				width: 150px;
+				height: 100px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.glasses-button img {
+				max-width: 100%;
+				max-height: 100%;
+			}
+		</style>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<h1>AI Glasses Try-On</h1>
+			<div class="video-container">
+				<img id="glasses" src="{{ url_for('static', filename=glass) }}" alt="Glasses Try-On">
+			</div>
+			<div id="glasses-selection">
+				<h2>Select Glasses</h2>
+				<div class="glasses-list">
+					<button class="glasses-button" data-glasses="Glasses1.1.png">
+						<img src="{{ url_for('static', filename='images/Glasses1.1.png') }}" alt="Glasses 1">
+					</button>
+					<button class="glasses-button" data-glasses="Glasses2.png">
+						<img src="{{ url_for('static', filename='images/Glasses2.png') }}" alt="Glasses 2">
+					</button>
+					<button class="glasses-button" data-glasses="Glasses3.1.png">
+						<img src="{{ url_for('static', filename='images/Glasses3.1.png') }}" alt="Glasses 3">
+					</button>
+					<button class="glasses-button" data-glasses="Glasses4.1.png">
+						<img src="{{ url_for('static', filename='images/Glasses4.1.png') }}" alt="Glasses 4">
+					</button>
+				</div>
+			</div>
+		</div>	
+	<script>
+		$(document).ready(function() {
+			const glassesImg = document.getElementById('glasses');
+	
+			$('.glasses-button').on('click', function() {
+				const selectedGlasses = $(this).data('glasses');
+				glassesImg.src = "{{ url_for('static', filename='') }}" + selectedGlasses;
+				$.post('/select_glasses', { glasses: selectedGlasses });
+				window.location.href = '/video_feed';
+			});
+		});
+	</script>
+</body>
+</html>

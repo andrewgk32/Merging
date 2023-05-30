@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Glasses Try-On</title>
+    <link rel="stylesheet" type="text/css" href="static/css/GUI.css">
+</head>
+<body>
+    <div class="container">
+        <div class="emoji-container left-emoji"></div>
+        <img src="static/images/glass1.jpeg" alt="Glasses Try-On" id="main-image">
+        <div class="emoji-container right-emoji"></div>
+        <p id="description">Try on different glasses and find your perfect look.
+            <br>We have powered this AI tool to fit your face dimensions,
+            <br>with our collection of glasses perfectly, so jump into it!
+            <br></br>
+            <br>Experience our AI-powered try-on technology today.</p>
+        <button id="try-button">Let's try it</button>
+        <div class="image-text">Try on our latest glasses collection!</div>
+    </div>
+    <script>
+        document.getElementById("try-button").onclick = function() {
+            window.location.href = "/camera";
+        }
+    </script>
+</body>
+</html>
