@@ -32,6 +32,21 @@ def generate_frames():
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+        text = "To try on different glasses, please navigate to the previous page using the arrow at the top left"
+        text_font = cv2.FONT_HERSHEY_SIMPLEX
+        text_font_scale = 0.4
+        text_thickness = 1
+        text_color = (0, 0, 0)  # Red color
+        text_size, _ = cv2.getTextSize(text, text_font, text_font_scale, text_thickness)
+        rect_x = 10
+        rect_y = frame.shape[0] - text_size[1] - 20
+        rect_width = frame.shape[1] - 20
+        rect_height = text_size[1] + 10
+        cv2.rectangle(frame, (rect_x, rect_y), (rect_x + rect_width, rect_y + rect_height), (255, 255, 255), -1)
+        cv2.putText(frame, text, (rect_x, rect_y + text_size[1] + 5), text_font, text_font_scale, text_color, text_thickness, cv2.LINE_AA)
+
+
+
 
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 
@@ -52,8 +67,11 @@ def generate_frames():
                 roi_color[ey:ey+eh, ex:ex+ew, 0:3] = blended_img
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
+        scale_factor = 1.8
+        height, width = frame.shape[:2]
+        resized_frame = cv2.resize(frame, (int(width * scale_factor), int(height * scale_factor)))
 
-        ret, buffer = cv2.imencode('.jpg', frame)
+        ret, buffer = cv2.imencode('.jpg', resized_frame)
         frame = buffer.tobytes()
 
         yield (b'--frame\r\n'
@@ -62,6 +80,10 @@ def generate_frames():
 @app.route('/video_feed')
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
