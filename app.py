@@ -1,5 +1,7 @@
 import numpy as np
 import cv2
+import os
+from werkzeug.utils import secure_filename
 from flask import Flask, render_template, Response, request
 
 app = Flask(__name__)
@@ -9,25 +11,86 @@ eye_cascade = cv2.CascadeClassifier('frontalEyes35x16.xml')
 
 selected_glasses = "Glasses3.1.png"  # Default glasses image
 
+app.config['UPLOAD_FOLDER'] = 'static/images'
+app.config['ALLOWED_EXTENSIONS'] = {'png'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+
 @app.route('/')
 def index():
+    uploaded_photo_path = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_photo.png')
+    if os.path.exists(uploaded_photo_path):
+        os.remove(uploaded_photo_path)
     return render_template('index.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+@app.route('/how_works')
+def how_works():
+    return render_template('how_works.html')
 
 @app.route('/camera')
 def camera():
+    uploaded_photo_path = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_photo.png')
+    if os.path.exists(uploaded_photo_path):
+        os.remove(uploaded_photo_path)
+
     return render_template('camera.html', glasses=selected_glasses)
 
 @app.route('/select_glasses', methods=['POST'])
 def select_glasses():
     global selected_glasses
-    selected_glasses = request.form['glasses']
+    selected_glasses = request.form.get('glasses')
+    use_glasses = request.form.get('use_glasses')
+    if use_glasses:
+        selected_glasses = use_glasses
     return '', 200
+
+@app.route('/upload_photo', methods=['POST'])
+def upload_photo():
+    file = request.files['photo']
+    if file and allowed_file(file.filename):
+        # Delete previously uploaded image, if it exists
+        uploaded_photo_path = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_photo.png')
+        if os.path.exists(uploaded_photo_path):
+            os.remove(uploaded_photo_path)
+
+        filename = secure_filename(file.filename)
+        upload_path = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_photo.png')
+        file.save(upload_path)
+
+        # Preprocess the image to add an alpha channel
+        image = cv2.imread(upload_path)
+        image_with_alpha = add_alpha_channel(image)
+        cv2.imwrite(upload_path, image_with_alpha)
+
+        return '', 200
+    return 'Invalid file format', 400
+
+def add_alpha_channel(image):
+    b, g, r = cv2.split(image)
+    alpha = np.ones_like(b) * 255
+    image_with_alpha = cv2.merge((b, g, r, alpha))
+    return image_with_alpha
+
+
 
 def generate_frames():
     cap = cv2.VideoCapture(0)
     while True:
         ret, frame = cap.read()
-        img_to_place = cv2.imread('static/images/' + selected_glasses, cv2.IMREAD_UNCHANGED)
+        img_to_place_path = 'static/images/' + selected_glasses
+        img_to_place = cv2.imread(img_to_place_path, cv2.IMREAD_UNCHANGED)
+
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)

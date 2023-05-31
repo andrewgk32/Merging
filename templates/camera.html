@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>AI Glasses Try-On</title>
-		<link rel="stylesheet" type="text/css" href="Static/css/GUI.css">
+		<link rel="stylesheet" type="text/css" href="static/css/GUI.css">
 		<style>
 			.glasses-list {
 				display: flex;
@@ -27,8 +27,8 @@
 	<body>
 		<div class="container">
 			<h1>AI Glasses Try-On</h1>
-			<div class="video-container">
-				<img id="glasses" src="{{ url_for('static', filename=glass) }}" alt="Glasses Try-On">
+			<div class="try_on_image">
+				<img id="glasses" src="static/images/try_on_image.jpg" alt="Glasses Try-On">
 			</div>
 			<div id="glasses-selection">
 				<h2>Select Glasses - Note Only Click on Glasses Image Once</h2>
@@ -45,20 +45,52 @@
 					<button class="glasses-button" data-glasses="Glasses4.1.png">
 						<img src="{{ url_for('static', filename='images/Glasses4.1.png') }}" alt="Glasses 4">
 					</button>
+					<input type="file" id="upload-photo" accept=".png">
 				</div>
+				<div id="use-selected-glasses">
+					<h2>Use Selected Glasses</h2>
+					<button id="use-glasses-button">Use Glasses</button>
+				  </div>
 			</div>
 		</div>	
 	<script>
 		$(document).ready(function() {
 			const glassesImg = document.getElementById('glasses');
-	
+			const uploadInput = document.getElementById('upload-photo');
+
 			$('.glasses-button').on('click', function() {
 				const selectedGlasses = $(this).data('glasses');
 				glassesImg.src = "{{ url_for('static', filename='') }}" + selectedGlasses;
 				$.post('/select_glasses', { glasses: selectedGlasses });
 				window.location.href = '/video_feed';
 			});
-		});
+
+			uploadInput.addEventListener('change', function(event) {
+				const file = event.target.files[0];
+				const formData = new FormData();
+				formData.append('photo', file);
+				$.ajax({
+				url: '/upload_photo',
+				type: 'POST',
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function(response) {
+					console.log('Photo uploaded successfully');
+					$('#use-selected-glasses').show(); // Show the "Use Selected Glasses" section
+				},
+				error: function(xhr, status, error) {
+					console.log('Error uploading photo:', error);
+					// Handle the error as needed
+				}
+				});
+			});
+
+			$('#use-glasses-button').on('click', function() {
+				$.post('/select_glasses', { glasses: 'uploaded_photo.png' }); //all photos renamed to uploaded_photo.png in the backend
+				window.location.href = '/video_feed';
+			});
+			});
 	</script>
 </body>
 </html>
