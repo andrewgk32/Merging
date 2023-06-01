@@ -69,18 +69,31 @@ def upload_photo():
         file.save(upload_path)
 
         # Preprocess the image to add an alpha channel
-        image = cv2.imread(upload_path)
-        image_with_alpha = add_alpha_channel(image)
-        cv2.imwrite(upload_path, image_with_alpha)
+        image = cv2.imread(upload_path, cv2.IMREAD_UNCHANGED)
+        if image.shape[2] == 3:  # Check if the image doesn't already have an alpha channel
+            image_with_alpha = add_alpha_channel(image)
+            cv2.imwrite(upload_path, image_with_alpha)
 
         return '', 200
     return 'Invalid file format', 400
 
 def add_alpha_channel(image):
     b, g, r = cv2.split(image)
-    alpha = np.ones_like(b) * 255
-    image_with_alpha = cv2.merge((b, g, r, alpha))
-    return image_with_alpha
+    
+    if np.all(b == 255) and np.all(g == 255) and np.all(r == 255):
+        return image
+
+    # Create a binary mask of white pixels
+    white_mask = cv2.bitwise_and(b, cv2.bitwise_and(g, r))
+    _, threshold = cv2.threshold(white_mask, 200, 255, cv2.THRESH_BINARY)
+    
+    # Invert the mask to make white pixels transparent
+    alpha = cv2.bitwise_not(threshold)
+    
+    # Merge the original image and the alpha channel
+    rgba = cv2.merge((b, g, r, alpha))
+    
+    return rgba
 
 
 

@@ -21,6 +21,18 @@
 				max-width: 100%;
 				max-height: 100%;
 			}
+			.file-input {
+				padding:10px;
+				border: 1px solid #ccc;
+				cursor: pointer;
+			}
+			.user-glasses-button {
+				padding:8px 16px;
+				background-color: #1a4cd4;
+				color: #fff;
+				border: none;
+				cursor: pointer;
+			}
 		</style>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	</head>
@@ -45,11 +57,12 @@
 					<button class="glasses-button" data-glasses="Glasses4.1.png">
 						<img src="{{ url_for('static', filename='images/Glasses4.1.png') }}" alt="Glasses 4">
 					</button>
-					<input type="file" id="upload-photo" accept=".png">
 				</div>
 				<div id="use-selected-glasses">
-					<h2>Use Selected Glasses</h2>
-					<button id="use-glasses-button">Use Glasses</button>
+					<h2>Or Upload Your own pair of Glasses!</h2>
+					<h3>Note - Files MUST be of type PNG with a white background (No need to be transparent, we'll take care of that)</h3>
+					<input type="file" id="upload-photo" accept=".png" class="file-input">
+					<button id="use-glasses-button"class='user-glasses-button'>Use Glasses</button>
 				  </div>
 			</div>
 		</div>	
