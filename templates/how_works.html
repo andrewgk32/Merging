@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contact Us</title>
+  <link rel="stylesheet" type="text/css" href="static/css/how.css">
+</head>
+<body>
+<h1 id="header"> </h1>
+  <div class="container">
+    <h2> Introduction: </h2>
+    <p> Online shopping has transformed the way we shop for various products, 
+        but when it comes to eyewear, there has always been a lingering challenge: 
+        how can customers truly visualize how glasses will look on their own faces? 
+        Introducing our cutting-edge AI-powered virtual try-on solution, 
+        a game-changer in the eyewear industry. By harnessing the power of computer vision 
+        and machine learning, our product offers a seamless and personalized experience 
+        that allows customers to try on different pairs of glasses virtually in real-time. 
+        Let's delve into the potential of our product, how it works based on the underlying code, 
+        and the exciting future opportunities it presents.</p>
+    <h2>Unleashing the Potential: </h2>
+    <p> Our AI-powered virtual try-on solution holds immense potential for the eyewear industry and beyond.
+        By bridging the gap between online and offline shopping experiences, it empowers customers to make 
+        more informed purchasing decisions and increases their confidence in selecting the perfect pair of 
+        glasses. With an ever-growing global eyewear market projected to reach over $184 billion by 2027, 
+        our product has the potential to revolutionize the way people shop for glasses online, opening up 
+        new opportunities for retailers, e-commerce platforms, and eyewear brands to enhance customer 
+        satisfaction and boost sales. </p>
+    <h2>How It Works: </h2>
+    <p> At the core of our virtual try-on solution lies a powerful combination of computer vision and machine learning 
+        algorithms. Leveraging OpenCV and dlib, two leading libraries in the field, our code captures video frames 
+        from a webcam, processes them, and performs facial landmark detection. OpenCV handles video frame capture and 
+        pre-processing tasks such as resizing and converting frames to grayscale. Meanwhile, dlib's pre-trained facial 
+        landmark detection model identifies and localizes key facial features, including the eyes, nose, and mouth. 
+        These facial landmarks serve as reference points for fitting the chosen pair of glasses onto the user's face in real-time. 
+        By seamlessly integrating these technologies, we provide a user-friendly and accurate virtual try-on experience that brings 
+        online eyewear shopping to life.</p>
+
+    <h2>Future Opportunities: </h2>
+    <p>The future of our AI-powered virtual try-on solution holds exciting possibilities. Beyond the eyewear industry, our technology 
+        can be adapted to revolutionize virtual try-on experiences in other domains such as cosmetics, jewelry, and fashion. 
+        Augmented reality (AR) applications can leverage our code to create interactive and immersive experiences, allowing users to virtually 
+        try on different accessories or experiment with makeup looks. Moreover, optometrists can employ our solution for remote consultations, 
+        enabling them to accurately assess the fit of prescription glasses on their patients' faces. 
+        The versatility of our product opens up a world of opportunities, transforming the way we try on and experience various products.</p>
+  </div>
+  <div class = "AI">
+    <img src="static/images/artificial-intelligence.png" alt="AI" id="AI">
+  </div>
+  <button class="back-button" onclick="goBack()">Back</button>
+</body>
+<footer>
+    <script>
+        function goBack() {
+          window.history.back();
+        }
+    </script>
+</footer>
+</html>

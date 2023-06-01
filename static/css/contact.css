@@ -1,61 +1,89 @@
 body {
-    background-color: #e6f2ff;
-  }
-  
-  .container {
-    max-width: 2500px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  h1 {
-    font-size: 80px;
-    margin-bottom: 60px;
-    color: #01004b;
-  }
-
- h2{
-    font-size: 50px; 
-  }
-  
-  .column {
-    display: inline-block;
-    width: 30%;
-    vertical-align: top;
-    margin: 10px;
-    text-align: left;
-  }
-  
-  .column ul {
-    list-style-type: disc;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .column li {
-    margin-bottom: 10px;
-    font-size: 30px;
-  }
-  
-  .column:last-child {
-    margin-right: 0;
-  }
-
-
-  .back-button {
-	margin-top: 20px;
-	margin-bottom: 50px;
-	padding: 10px 20px;
-	background-color: #1a4cd4;
-	border: none;
-	color: white;
-	font-size: 40px;
-	cursor: pointer;
-	border-radius: 10px;
-  }
-
-  #back-button:hover {
-	background-color: #01004b;
+  background-color: #e6f2ff;
 }
-  
+
+.container {
+  max-width: 100%;
+  /* margin: 0 auto; */
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 40px ;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1 {
+  font-size: 80px;
+  margin-bottom: 60px;
+  color: #01004b;
+}
+
+h2{
+  font-size: 50px; 
+}
+
+.column {
+  display: inline-block;
+  width: auto;
+  vertical-align: top;
+  margin-right: 60px;
+  /* margin-left: 60px; */
+  text-align: left;
+}
+
+
+.column ul {
+  list-style-type: disc;
+  margin: 0;
+  padding: 0;
+  margin-right: 60px;
+}
+
+.column li {
+  margin-bottom: 10px;
+  font-size: 30px;
+  margin-right: 60px;
+}
+
+.column:last-child {
+  margin-right: 0;
+}
+
+
+.back-button {
+margin-top: 20px;
+margin-bottom: 50px;
+padding: 10px 20px;
+background-color: #1a4cd4;
+border: none;
+color: white;
+font-size: 40px;
+cursor: pointer;
+border-radius: 10px;
+}
+
+#back-button:hover {
+background-color: #01004b;
+}
+
+
+#footer{
+margin-top: 80px;
+}
+
+
+#header{
+font-size: 60px;
+margin-top: 20px;
+margin-bottom: 40px;
+color: #01004b;
+text-align: center;
+}
+
+#teamwork{
+margin-top: 50px;
+margin-bottom: 30px;
+display: block;
+margin-left: auto;
+margin-right: auto;
+}
