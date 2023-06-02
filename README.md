@@ -12,6 +12,6 @@ If you choose to upload you're own pair of glasses for testing, the app only all
 
 The application should default to launch at 127.0.0.1:5000, but double check where it launchs to in your VS code terminal, or whichever IDE you prefer, the application was created and tested in Visual Studio Code with Python 3.10.
 
-For myself, I had to run the application via the F5 command in vs-code, as the Flask run command wasn't working in my terminal.
+For myself, I had to run the application via the F5 command in vs-code in debug mode, then selecting run as a flask application,  as the Flask run command wasn't working in my terminal.
 
 Enjoy!
