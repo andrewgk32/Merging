@@ -3,64 +3,6 @@
 	<head>
 		<title>AI Glasses Try-On</title>
 		<link rel="stylesheet" type="text/css" href="static/css/GUI.css">
-		<style>
-			.glasses-list {
-				display: flex;
-				justify-content: space-around;
-				align-items: center;
-				margin-top: 20px;
-			}
-			.glasses-button {
-				width: 150px;
-				height: 100px;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
-			.glasses-button img {
-				max-width: 100%;
-				max-height: 100%;
-			}
-			.file-upload-section {
-				margin-top: 20px;
-			}
-
-			.file-upload-label,
-			.user-glasses-button {
-				padding: 10px 20px;
-				background-color: #1a4cd4;
-				color: #fff;
-				font-size: 25px;
-				border-radius: 10px;
-				border: none;
-				cursor: pointer;
-				margin-top: 10px;
-			}
-			.user-glasses-button:disabled {
-				background-color: gray;
-				color: snow;
-				padding:10px, 20px;
-				font-size: 25px;
-				border-radius: 10px;
-				border:none;
-				cursor: not-allowed;
-				opacity: 0.9;
-			}
-
-			.file-input {
-				display: none;
-			}
-			.back-to-ind {
-				padding: 10px 20px;
-				background-color: #1a4cd4;
-				border: none;
-				color: white;
-				font-size: 30px;
-				cursor: pointer;
-				border-radius: 10px;
-				float: left;
- 			}
-		</style>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	</head>
 	<body>
@@ -90,7 +32,8 @@
 					<h3>Note - Files MUST be of type PNG with a white background (Transparent or Not, we'll take care of It)</h3>
 					<input type="file" id="upload-photo" accept=".png" class="file-input">
 					<label for="upload-photo" class="file-upload-label">Upload File</label>
-					<button id="use-glasses-button" class="user-glasses-button" disabled>Try on Your Glasses Now</button>
+					<button id="use-glasses-button" class="user-glasses-button" disabled>Try on Your Glasses Now</button>				
+					<img id="uploaded-image" class="uploaded-image" src="" alt="">
 				</div>
 				<div>
 					<button class="back-to-ind" onclick="goBack()">Back</button>
@@ -107,6 +50,8 @@
 			const glassesImg = document.getElementById('glasses');
 			const uploadInput = document.getElementById('upload-photo');
 			const useGlassesButton = document.getElementById('use-glasses-button');
+			const uploadedImage = document.getElementById('uploaded-image');
+			
 
 				// Disable the button initially
 				useGlassesButton.disabled = true;
@@ -144,6 +89,7 @@
 					console.log('Photo uploaded successfully');
 					useGlassesButton.disabled = false;
 					$('#use-selected-glasses').show(); // Show the "Use Selected Glasses" section
+					uploadedImage.src = URL.createObjectURL(file); // Set the source of the uploaded image
 				},
 				error: function(xhr, status, error) {
 					console.log('Error uploading photo:', error);
