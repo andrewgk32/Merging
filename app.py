@@ -57,6 +57,7 @@ def select_glasses():
 
 @app.route('/upload_photo', methods=['POST'])
 def upload_photo():
+    #When User Routes to this Page via Upload Image Button, perform Preprocessing on Uploaded Image
     file = request.files['photo']
     if file and allowed_file(file.filename):
         # Delete previously uploaded image, if it exists
@@ -78,6 +79,7 @@ def upload_photo():
     return 'Invalid file format', 400
 
 def add_alpha_channel(image):
+    #Adds Alpha Channel to image, then processes image in order to make background transparent
     b, g, r = cv2.split(image)
     
     if np.all(b == 255) and np.all(g == 255) and np.all(r == 255):
@@ -101,18 +103,19 @@ def generate_frames():
     cap = cv2.VideoCapture(0)
     while True:
         ret, frame = cap.read()
+        #Checks Which glasses were selected
         img_to_place_path = 'static/images/' + selected_glasses
         img_to_place = cv2.imread(img_to_place_path, cv2.IMREAD_UNCHANGED)
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
+        #Creates instructions for user navigation to previous page
         text = "To try on different glasses, please navigate to the previous page using the arrow at the top left"
         text_font = cv2.FONT_HERSHEY_SIMPLEX
         text_font_scale = 0.4
         text_thickness = 1
-        text_color = (0, 0, 0)  # Red color
+        text_color = (0, 0, 0) 
         text_size, _ = cv2.getTextSize(text, text_font, text_font_scale, text_thickness)
         rect_x = 10
         rect_y = frame.shape[0] - text_size[1] - 20
@@ -123,17 +126,23 @@ def generate_frames():
 
 
 
-
+        #References our Cascafe for Face
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 
         for (x, y, w, h) in faces:
+            #Uncomment bellow line to see region found by cascade
             #cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 5)
+            #Returns region of interest, i.e. what the cascade thinks is a Face
             roi_gray = gray[y:y+w, x:x+w]
             roi_color = frame[y:y+h, x:x+w]
+            #Setup Eyes Cascade
             eyes = eye_cascade.detectMultiScale(roi_gray, 1.3, 5)
             for (ex, ey, ew, eh) in eyes:
+                #Uncomment bellow line to see region found by cascade
                 #cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 5)
+                #Resize image based on Cascade Value
                 resized_img = cv2.resize(img_to_place, (ew, eh))
+                #Creates mask of image whilst running to merge image with webcam fefed and ensures that 
                 mask = resized_img[:, :, 3] / 255.0
                 mask = cv2.merge((mask, mask, mask))
                 resized_img = resized_img[:, :, 0:3]  # Remove the alpha channel
@@ -141,8 +150,9 @@ def generate_frames():
                 blended_img = cv2.multiply(resized_img.astype(float), mask) + cv2.multiply(background_roi.astype(float), 1.0 - mask)
                 blended_img = blended_img.astype(np.uint8)
                 roi_color[ey:ey+eh, ex:ex+ew, 0:3] = blended_img
-
+        #Retruns the generated webcam feed with image interporlated
         frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
+        #Resize webcam feed for Flask App
         scale_factor = 1.8
         height, width = frame.shape[:2]
         resized_frame = cv2.resize(frame, (int(width * scale_factor), int(height * scale_factor)))
